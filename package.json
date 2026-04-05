@@ -1,0 +1,11 @@
+{
+  "name": "guiziweb-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "probot": "^13.0.0"
+  }
+}

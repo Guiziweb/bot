@@ -17,6 +17,7 @@ const app = (app) => {
       event_type: 'claude-review',
       client_payload: {
         repo: repository.full_name,
+        repo_name: repository.name,
         pr: String(issue.number),
         comment: comment.body
       }

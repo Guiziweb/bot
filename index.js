@@ -1,6 +1,5 @@
 import { createNodeMiddleware, createProbot } from 'probot'
 import http from 'http'
-import crypto from 'crypto'
 
 const app = (app) => {
   app.on('issue_comment.created', async (context) => {
@@ -29,22 +28,6 @@ const app = (app) => {
 
 const probot = createProbot()
 const middleware = createNodeMiddleware(app, { probot })
-
-const server = http.createServer((req, res) => {
-  if (req.method === 'POST') {
-    let body = ''
-    req.on('data', chunk => { body += chunk })
-    req.on('end', () => {
-      const sig = req.headers['x-hub-signature-256']
-      const expected = 'sha256=' + crypto.createHmac('sha256', process.env.WEBHOOK_SECRET).update(body).digest('hex')
-      console.log('received:', sig)
-      console.log('expected:', expected)
-      console.log('match:', sig === expected)
-    })
-  }
-  middleware(req, res)
-})
-
-server.listen(3000, () => {
+http.createServer(middleware).listen(3000, () => {
   console.log('Bot listening on port 3000')
 })
